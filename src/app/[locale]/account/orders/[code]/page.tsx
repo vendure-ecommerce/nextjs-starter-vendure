@@ -1,5 +1,4 @@
 import { redirect } from 'next/navigation';
-import Link from 'next/link';
 import { ChevronLeft } from 'lucide-react';
 import { query } from '@/lib/vendure/api';
 import { GetOrderDetailQuery } from '@/lib/vendure/queries';
@@ -8,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import Image from 'next/image';
+import {Link} from "@/i18n/navigation";
 
 function formatDate(dateString: string) {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -58,7 +58,7 @@ export default async function OrderDetailPage({
         <div>
             <div className="mb-6">
                 <Button variant="ghost" size="sm" asChild className="mb-4">
-                    <Link href="/[locale]/account/orders">
+                    <Link href="/account/orders">
                         <ChevronLeft className="h-4 w-4 mr-2" />
                         Back to Orders
                     </Link>
@@ -100,7 +100,7 @@ export default async function OrderDetailPage({
                                         </div>
                                         <div className="flex-1">
                                             <Link
-                                                href={`/src/app/%5Blocale%5D/product/${line.productVariant.product.slug}`}
+                                                href={`/product/${line.productVariant.product.slug}`}
                                                 className="font-medium hover:underline"
                                             >
                                                 {line.productVariant.product.name}

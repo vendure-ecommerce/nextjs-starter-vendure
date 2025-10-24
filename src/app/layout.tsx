@@ -5,6 +5,7 @@ import {Toaster} from "@/components/ui/sonner";
 import {ChannelProvider} from "@/providers/channel-provider";
 import {getActiveChannel} from "@/lib/vendure/actions";
 import {NextIntlClientProvider} from 'next-intl';
+import {AppProviders} from "@/app/providers";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -26,24 +27,15 @@ export default async function RootLayout({
                                          }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const channel = await getActiveChannel();
-
-    if (!channel) {
-        throw new Error('Failed to load channel data');
-    }
-
     return (
         <html lang="en">
         <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
         >
-        <NextIntlClientProvider>
-            <ChannelProvider channel={channel}>
-
-                {children}
-                <Toaster/>
-            </ChannelProvider>
-        </NextIntlClientProvider>
+        <AppProviders>
+            {children}
+            <Toaster/>
+        </AppProviders>
         </body>
         </html>
     );

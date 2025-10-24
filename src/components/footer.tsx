@@ -2,6 +2,16 @@
 import { getTopCollections } from '@/lib/collections';
 import {Link} from "@/i18n/navigation";
 
+async function Copyright(){
+    'use cache'
+
+    return (
+        <div>
+            © {new Date().getFullYear()} Vendure Store. All rights reserved.
+        </div>
+    )
+}
+
 export async function Footer() {
     const collections = await getTopCollections();
 
@@ -71,9 +81,7 @@ export async function Footer() {
 
                 {/* Bottom Section */}
                 <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-                    <div>
-                        © {new Date().getFullYear()} Vendure Store. All rights reserved.
-                    </div>
+                    <Copyright/>
                     <div className="flex items-center gap-2">
                         <span>Powered by</span>
                         <a

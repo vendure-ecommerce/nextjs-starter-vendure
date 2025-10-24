@@ -1,4 +1,4 @@
-import {ShoppingCart, User} from "lucide-react";
+import {User} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -14,9 +14,11 @@ import {SearchInput} from "@/components/search-input";
 import {getTopCollections} from "@/lib/collections";
 import {CurrencyPicker} from "@/components/currency-picker";
 import {LanguagePicker} from "@/components/language-picker";
+import {CartIcon} from "@/components/cart-icon";
 import {Link} from "@/i18n/navigation";
 
 export async function Navbar({locale}: { locale: string }) {
+    'use cache: private'
 
     const [collections, customerResult, orderResult] = await Promise.all([
         getTopCollections(locale),
@@ -69,18 +71,7 @@ export async function Navbar({locale}: { locale: string }) {
                         </div>
 
                         {/* Cart Button */}
-                        <Button variant="ghost" size="icon" asChild className="relative">
-                            <Link href="/cart">
-                                <ShoppingCart className="h-5 w-5"/>
-                                {cartItemCount > 0 && (
-                                    <span
-                                        className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                                        {cartItemCount}
-                                    </span>
-                                )}
-                                <span className="sr-only">Shopping Cart</span>
-                            </Link>
-                        </Button>
+                        <CartIcon cartItemCount={cartItemCount}/>
 
                         {/* User Dropdown / Sign In */}
                         {customer ? (
@@ -91,7 +82,7 @@ export async function Navbar({locale}: { locale: string }) {
                                         <span className="sr-only">User menu</span>
                                     </Button>
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
+                                <DropdownMenuContent>
                                     <DropdownMenuLabel>
                                         Hi, {customer.firstName}
                                     </DropdownMenuLabel>

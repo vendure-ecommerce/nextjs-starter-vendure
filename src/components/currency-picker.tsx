@@ -1,32 +1,19 @@
-'use client';
+import {getActiveChannel} from '@/lib/vendure/actions';
+import {getCurrencyCode} from '@/lib/settings';
+import {CurrencyPickerClient} from './currency-picker-client';
 
-import { useChannel } from '@/providers/channel-provider';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
+export async function CurrencyPicker() {
+    const channel = await getActiveChannel();
+    const currentCurrencyCode = await getCurrencyCode();
 
-export function CurrencyPicker() {
-    const { channel, currencyCode, setCurrencyCode } = useChannel();
+    if (!channel) {
+        return null;
+    }
 
     return (
-        <Select
-            value={currencyCode}
-            onValueChange={setCurrencyCode}
-        >
-            <SelectTrigger className="w-[100px]">
-                <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-                {channel.availableCurrencyCodes.map((code) => (
-                    <SelectItem key={code} value={code}>
-                        {code}
-                    </SelectItem>
-                ))}
-            </SelectContent>
-        </Select>
+        <CurrencyPickerClient
+            availableCurrencyCodes={channel.availableCurrencyCodes}
+            currentCurrencyCode={currentCurrencyCode || channel.defaultCurrencyCode}
+        />
     );
 }

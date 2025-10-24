@@ -8,7 +8,6 @@ import {RadioGroup, RadioGroupItem} from '@/components/ui/radio-group';
 import {ShoppingCart, CheckCircle2} from 'lucide-react';
 import {addToCart} from '@/app/[locale]/product/[slug]/actions';
 import {toast} from 'sonner';
-import {useChannel} from '@/providers/channel-provider';
 import {formatPrice} from '@/lib/format';
 import {usePathname, useRouter} from "@/i18n/navigation";
 
@@ -47,10 +46,10 @@ interface ProductInfoProps {
         }>;
     };
     searchParams: { [key: string]: string | string[] | undefined };
+    currencyCode: string;
 }
 
-export function ProductInfo({product, searchParams}: ProductInfoProps) {
-    const {currencyCode} = useChannel();
+export function ProductInfo({product, searchParams, currencyCode}: ProductInfoProps) {
     const pathname = usePathname();
     const router = useRouter();
     const currentSearchParams = useSearchParams();

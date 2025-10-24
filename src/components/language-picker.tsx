@@ -1,32 +1,19 @@
-'use client';
+import {getActiveChannel} from '@/lib/vendure/actions';
+import {getLanguageCode} from '@/lib/settings';
+import {LanguagePickerClient} from './language-picker-client';
 
-import { useChannel } from '@/providers/channel-provider';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
+export async function LanguagePicker() {
+    const channel = await getActiveChannel();
+    const currentLanguageCode = await getLanguageCode();
 
-export function LanguagePicker() {
-    const { channel, languageCode, setLanguageCode } = useChannel();
+    if (!channel) {
+        return null;
+    }
 
     return (
-        <Select
-            value={languageCode}
-            onValueChange={setLanguageCode}
-        >
-            <SelectTrigger className="w-[100px]">
-                <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-                {channel.availableLanguageCodes?.map((code) => (
-                    <SelectItem key={code} value={code}>
-                        {code.toUpperCase()}
-                    </SelectItem>
-                ))}
-            </SelectContent>
-        </Select>
+        <LanguagePickerClient
+            availableLanguageCodes={channel.availableLanguageCodes || []}
+            currentLanguageCode={currentLanguageCode || channel.defaultLanguageCode}
+        />
     );
 }

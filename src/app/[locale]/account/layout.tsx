@@ -2,6 +2,7 @@ import Link from 'next/link';
 import {Package, User} from 'lucide-react';
 import {redirect} from 'next/navigation';
 import {getActiveCustomer} from '@/lib/vendure/actions';
+import {Suspense} from "react";
 
 const navItems = [
     {href: '/account/orders', label: 'Orders', icon: Package},
@@ -36,7 +37,9 @@ export default async function AccountLayout({
                         ))}
                     </nav>
                 </aside>
-                <main className="flex-1">{children}</main>
+                <main className="flex-1">
+                    {children}
+                </main>
             </div>
         </div>
     );

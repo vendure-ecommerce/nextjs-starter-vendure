@@ -15,7 +15,7 @@ interface FacetFiltersProps {
     }>;
 }
 
-export function FacetFilters({ productDataPromise }: FacetFiltersProps) {
+export  function FacetFilters({ productDataPromise }: FacetFiltersProps) {
     const result = use(productDataPromise);
     const searchResult = result.data.search;
     const pathname = usePathname();

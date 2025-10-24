@@ -26,6 +26,12 @@ export default async function CheckoutPage() {
     redirect('/cart');
   }
 
+  // If the order is no longer in AddingItems state, it's been completed
+  // Redirect to the order confirmation page
+  if (activeOrder.state !== 'AddingItems' && activeOrder.state !== 'ArrangingPayment') {
+    redirect(`/order-confirmation/${activeOrder.code}`);
+  }
+
   const addresses = addressesRes.data.activeCustomer?.addresses || [];
   const countries = countriesRes.data.availableCountries || [];
   const shippingMethods = shippingMethodsRes.data.eligibleShippingMethods || [];

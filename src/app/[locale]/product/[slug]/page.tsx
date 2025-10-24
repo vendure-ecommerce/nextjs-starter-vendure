@@ -3,6 +3,8 @@ import { GetProductDetailQuery } from '@/lib/vendure/queries';
 import { ProductImageCarousel } from '@/components/product-image-carousel';
 import { ProductInfo } from '@/components/product-info';
 import { notFound } from 'next/navigation';
+import {getCurrencyCode} from '@/lib/settings';
+import {getActiveChannel} from '@/lib/vendure/actions';
 
 interface ProductDetailPageProps {
     params: Promise<{ slug: string }>;
@@ -13,12 +15,19 @@ export default async function ProductDetailPage({ params, searchParams }: Produc
     const { slug } = await params;
     const searchParamsResolved = await searchParams;
 
-    const result = await query(GetProductDetailQuery, { slug });
+    const [result, channel, currencyCodeFromCookie] = await Promise.all([
+        query(GetProductDetailQuery, { slug }),
+        getActiveChannel(),
+        getCurrencyCode(),
+    ]);
+
     const product = result.data.product;
 
     if (!product) {
         notFound();
     }
+
+    const currencyCode = currencyCodeFromCookie || channel?.defaultCurrencyCode || 'USD';
 
     return (
         <div className="container mx-auto px-4 py-8 mt-16">
@@ -30,7 +39,7 @@ export default async function ProductDetailPage({ params, searchParams }: Produc
 
                 {/* Right Column: Product Info */}
                 <div>
-                    <ProductInfo product={product} searchParams={searchParamsResolved} />
+                    <ProductInfo product={product} searchParams={searchParamsResolved} currencyCode={currencyCode} />
                 </div>
             </div>
         </div>

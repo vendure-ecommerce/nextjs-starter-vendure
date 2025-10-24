@@ -25,6 +25,11 @@ export default function ReviewStep({ onEditStep }: ReviewStepProps) {
     try {
       await placeOrderAction(selectedPaymentMethodCode);
     } catch (error) {
+      // Check if this is a Next.js redirect (which is expected)
+      if (error instanceof Error && error.message.includes('NEXT_REDIRECT')) {
+        // This is a redirect, not an error - let it propagate
+        throw error;
+      }
       console.error('Error placing order:', error);
       setLoading(false);
     }

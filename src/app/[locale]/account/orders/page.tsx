@@ -1,5 +1,4 @@
-import {redirect} from 'next/navigation';
-import Link from 'next/link';
+
 import {query} from '@/lib/vendure/api';
 import {GetCustomerOrdersQuery} from '@/lib/vendure/queries';
 import {
@@ -22,6 +21,7 @@ import {
 } from '@/components/ui/pagination';
 import {ArrowRightIcon} from "lucide-react";
 import {Button} from "@/components/ui/button";
+import {Link, redirect} from "@/i18n/navigation";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -77,7 +77,7 @@ export default async function OrdersPage({
     );
 
     if (!data.activeCustomer) {
-        redirect('/sign-in');
+        return redirect('/sign-in');
     }
 
     const orders = data.activeCustomer.orders.items;
@@ -111,7 +111,7 @@ export default async function OrdersPage({
                                         <TableCell className="font-medium">
                                             <Button asChild variant="outline">
                                                 <Link
-                                                    href={`/src/app/%5Blocale%5D/account/orders/${order.code}`}
+                                                    href={`/account/orders/${order.code}`}
                                                 >
                                                     {order.code} <ArrowRightIcon/>
                                                 </Link>

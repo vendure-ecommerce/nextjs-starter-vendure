@@ -1,19 +1,16 @@
-'use client';
-
 import Image from 'next/image';
 import {formatPrice} from '@/lib/format';
-import {useChannel} from '@/providers/channel-provider';
 import {Link} from "@/i18n/navigation";
 import {FragmentOf, readFragment} from '@/graphql';
 import {ProductCardFragment} from '@/lib/vendure/fragments';
 
 interface ProductCardProps {
     product: FragmentOf<typeof ProductCardFragment>;
+    currencyCode: string;
 }
 
-export function ProductCard({product: productProp}: ProductCardProps) {
+export function ProductCard({product: productProp, currencyCode}: ProductCardProps) {
     const product = readFragment(ProductCardFragment, productProp);
-    const {currencyCode} = useChannel();
 
     return (
         <Link

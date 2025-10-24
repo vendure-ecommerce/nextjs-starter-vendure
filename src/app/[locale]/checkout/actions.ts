@@ -9,7 +9,7 @@ import {
   CreateCustomerAddressMutation,
   TransitionOrderToStateMutation,
 } from '@/lib/vendure/mutations';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, updateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 interface AddressInput {
@@ -129,5 +129,9 @@ export async function placeOrder(paymentMethodCode: string) {
   }
 
   const orderCode = result.data.addPaymentToOrder.code;
+
+  // Update the cart tag to immediately invalidate cached cart data
+  updateTag('cart');
+
   redirect(`/order-confirmation/${orderCode}`);
 }

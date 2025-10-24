@@ -19,7 +19,8 @@ export default function CheckoutFlow() {
     const completed = new Set<CheckoutStep>();
     let current: CheckoutStep = 'shipping';
 
-    if (order.shippingAddress) {
+    // Check if shipping address has required fields, not just if the object exists
+    if (order.shippingAddress?.streetLine1 && order.shippingAddress?.country) {
       completed.add('shipping');
       current = 'delivery';
     }
